@@ -11,7 +11,7 @@ The library also uses requests:
 
 	pip install requests
 
-With nose and request installed
+With nose and requests installed
 
 	python runtests.py
 
