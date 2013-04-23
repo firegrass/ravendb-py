@@ -3,7 +3,7 @@ import unittest
 from ravenpy import client as rdb
 
 
-class test_when_using_ravenpy_client(unittest.TestCase):
+class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
 
     def setUp(self):
         self.client = rdb('localhost', 'test', 8080)
@@ -20,6 +20,7 @@ class test_when_using_ravenpy_client(unittest.TestCase):
         })
 
         self.assertNotEqual(documentId, None)
+        self.client.delete(documentId)
 
     def test_it_is_possible_to_delete_a_document(self):
 
@@ -46,6 +47,7 @@ class test_when_using_ravenpy_client(unittest.TestCase):
         containsKey = "title" in result
 
         self.assertEqual("test document", result["title"])
+        self.client.delete(documentId)
 
     def test_it_is_possible_to_update_an_existing_document(self):
 
@@ -69,3 +71,4 @@ class test_when_using_ravenpy_client(unittest.TestCase):
             result["title"] = "test document update"
 
         self.assertEqual("test document update", result["title"])
+        self.client.delete(documentId)
