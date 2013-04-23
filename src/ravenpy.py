@@ -1,9 +1,9 @@
 import json
 import requests
-from actions import storer as s
-from actions import deleter as d
-from actions import loader as l
-from actions import indexer as i
+from documents import storer as s
+from documents import deleter as d
+from documents import loader as l
+from indexes import indexer as i
 
 
 class client(object):
