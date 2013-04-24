@@ -31,3 +31,6 @@ class client(object):
 
     def deleteIndex(self, indexId):
         return i.indexer(self, indexId).delete()
+
+    def query(self, indexId, query):
+        return i.indexer(self, indexId).query(query)
