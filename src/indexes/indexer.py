@@ -9,12 +9,24 @@ class indexer(object):
         self._indexId = indexId
 
     def index(self, index):
+
+        def mapIndex(index):
+            mapper = 'from {0} in docs'.format(index["alias"])
+            if 'where' in index:
+                mapper = '{0} where {1} '.format(mapper, index["where"])
+            mapper = '{0} select {1}'.format(mapper, index["select"])
+            return mapper
+
+        createIndex = {
+            'Map': mapIndex(index)
+        }
+
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
         request = requests.put(
             '{0}/databases/{1}/indexes/{2}'.format(
                 self._client.url, self._client.database, self._indexId
             ),
-            data=json.dumps(index), headers=headers)
+            data=json.dumps(createIndex), headers=headers)
 
         if request.status_code == 201:
             response = request.json()
@@ -26,7 +38,7 @@ class indexer(object):
                 )
         else:
             raise Exception(
-                'Error creating index Http :{0}{1}'.format(request.status_code)
+                'Error creating index Http :{0}'.format(request.status_code)
             )
 
     def delete(self):
@@ -42,7 +54,7 @@ class indexer(object):
             return True
         else:
             raise Exception(
-                'Error deleting index Http :{0}{1}'.format(request.status_code)
+                'Error deleting index Http :{0}'.format(request.status_code)
             )
 
     def query(self, query):
@@ -51,11 +63,14 @@ class indexer(object):
         parsedQuery = ''
 
         for key, value in query.items():
-            parsedQuery = parsedQuery.join('{0}:{1}'.format(key, value))
+            parsedQuery = '{1}:{2}&{0}'.format(parsedQuery, key, value)
 
         request = requests.get(
             '{0}/databases/{1}/indexes/{2}?query={3}'.format(
-                self._client.url, self._client.database, self._indexId, parsedQuery
+                self._client.url,
+                self._client.database,
+                self._indexId,
+                parsedQuery
             ),
             headers=headers
         )
@@ -76,7 +91,7 @@ class indexer(object):
                 )
         else:
             raise Exception(
-                'Error querying index Http :{0}{1}'.format(
+                'Error querying index Http :{0}'.format(
                     request.status_code
                 )
             )
