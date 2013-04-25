@@ -70,6 +70,7 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
         self.client.delete(docId1)
         self.client.delete(docId2)
         self.client.delete(docId3)
+        self.client.deleteIndex('documentsByTitle')
 
         self.assertTrue("Results" in results)
         self.assertEqual(len(results["Results"]), 2)
@@ -108,6 +109,7 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
         self.client.delete(docId1)
         self.client.delete(docId2)
         self.client.delete(docId3)
+        self.client.deleteIndex('documentsByTitle')
 
         self.assertTrue("Results" in results)
         self.assertEqual(len(results["Results"]), 1)
