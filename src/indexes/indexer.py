@@ -10,8 +10,10 @@ class indexer(object):
 
     def index(self, index):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        request = requests.put('{0}/databases/{1}/indexes/{2}'
-            .format(self._client.url, self._client.database, self._indexId), 
+        request = requests.put(
+            '{0}/databases/{1}/indexes/{2}'.format(
+                self._client.url, self._client.database, self._indexId
+            ),
             data=json.dumps(index), headers=headers)
 
         if request.status_code == 201:
@@ -19,26 +21,44 @@ class indexer(object):
             if 'Index' in response:
                 return response['Index']
             else:
-                raise Exception('Create index did not return the expected response')
+                raise Exception(
+                    'Create index did not return the expected response'
+                )
         else:
-            raise Exception('Error creating index Http :{0}{1}'.format(request.status_code)) 
+            raise Exception(
+                'Error creating index Http :{0}{1}'.format(request.status_code)
+            )
 
     def delete(self):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        request = requests.delete('{0}/databases/{1}/indexes/{2}'
-            .format(self._client.url, self._client.database, self._indexId), 
-            headers=headers)
+        request = requests.delete(
+            '{0}/databases/{1}/indexes/{2}'.format(
+                self._client.url, self._client.database, self._indexId
+            ),
+            headers=headers
+        )
 
         if request.status_code == 204:
             return True
         else:
-            raise Exception('Error deleting index Http :{0}{1}'.format(request.status_code))   
+            raise Exception(
+                'Error deleting index Http :{0}{1}'.format(request.status_code)
+            )
 
     def query(self, query):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        request = requests.get('{0}/databases/{1}/indexes/{2}?query={3}'
-            .format(self._client.url, self._client.database, self._indexId, query), 
-            headers=headers)
+
+        parsedQuery = ''
+
+        for key, value in query.items():
+            parsedQuery = parsedQuery.join('{0}:{1}'.format(key, value))
+
+        request = requests.get(
+            '{0}/databases/{1}/indexes/{2}?query={3}'.format(
+                self._client.url, self._client.database, self._indexId, parsedQuery
+            ),
+            headers=headers
+        )
 
         if request.status_code == 200:
             response = request.json()
@@ -49,6 +69,14 @@ class indexer(object):
 
                 return response
             else:
-                raise Exception('Query did not return the expected response Http: {0}'.format(request.status_code))
+                raise Exception(
+                    'Query response unexpected Http: {0}'.format(
+                        request.status_code
+                    )
+                )
         else:
-            raise Exception('Error querying index Http :{0}{1}'.format(request.status_code)) 
+            raise Exception(
+                'Error querying index Http :{0}{1}'.format(
+                    request.status_code
+                )
+            )

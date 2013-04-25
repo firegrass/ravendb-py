@@ -49,7 +49,7 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
 
         index = {'Map': 'from doc in docs\r\n select new { doc.deleted }'}
         self.client.createIndex(index, 'documentsByState')
-        results = self.client.query('documentsByState', "deleted:false")
+        results = self.client.query('documentsByState', {'deleted': False})
 
         self.client.delete(docId1)
         self.client.delete(docId2)

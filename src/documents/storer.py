@@ -10,28 +10,47 @@ class storer(object):
 
     def store(self):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        request = requests.post('{0}/databases/{1}/docs'.format(self._client.url, self._client.database),
-                                data=json.dumps(self._document), headers=headers)
+        request = requests.post(
+            '{0}/databases/{1}/docs'.format(
+                self._client.url, self._client.database
+            ),
+            data=json.dumps(self._document), headers=headers
+        )
 
         if request.status_code == 201:
             response = request.json()
             if 'Key' in response:
                 return response['Key']
             else:
-                raise Exception('Storing document did not return the expected response')
+                raise Exception(
+                    'Storing document did not return the expected response'
+                )
         else:
-            raise Exception('Error storing document Http :{0}'.format(request.status_code))
+            raise Exception(
+                'Error storing document Http :{0}'.format(
+                    request.status_code
+                )
+            )
 
     def update(self, documentId):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-        request = requests.put('{0}/databases/{1}/docs/{2}'.format(self._client.url, self._client.database, documentId),
-                                data=json.dumps(self._document), headers=headers)
+        request = requests.put(
+            '{0}/databases/{1}/docs/{2}'.format(
+                self._client.url, self._client.database, documentId
+            ),
+            data=json.dumps(self._document), headers=headers)
 
         if request.status_code == 201:
             response = request.json()
             if 'Key' in response:
                 return response['Key']
             else:
-                raise Exception('Storing document did not return the expected response')
+                raise Exception(
+                    'Storing document did not return the expected response'
+                )
         else:
-            raise Exception('Error storing document Http :{0}'.format(request.status_code)) 
+            raise Exception(
+                'Error storing document Http :{0}'.format(
+                    request.status_code
+                )
+            )
