@@ -40,23 +40,19 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
 
     def test_it_is_possible_to_query_an_index(self):
 
-        docId1 = self.client.store({
+        docIds = self.client.store([{
             "title": "test document",
             "deleted": True,
             "type": "TestDoc"
-        })
-
-        docId2 = self.client.store({
+        }, {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        })
-
-        docId3 = self.client.store({
+        }, {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        })
+        }])
 
         index = {
             'alias': 'doc',
@@ -67,9 +63,7 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
         self.client.createIndex(index, 'documentsByState')
         results = self.client.query('documentsByState', {'deleted': False})
 
-        self.client.delete(docId1)
-        self.client.delete(docId2)
-        self.client.delete(docId3)
+        self.client.delete(docIds)
         self.client.deleteIndex('documentsByTitle')
 
         self.assertTrue("Results" in results)
@@ -77,23 +71,19 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
 
     def test_it_is_possible_to_query_an_index_with_multiple_arguments(self):
 
-        docId1 = self.client.store({
+        docIds = self.client.store([{
             "title": "test document",
             "deleted": True,
             "type": "DocType"
-        })
-
-        docId2 = self.client.store({
+        }, {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        })
-
-        docId3 = self.client.store({
+        }, {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        })
+        }])
 
         index = {
             'alias': 'doc',
@@ -106,9 +96,7 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
             'type': 'DocType'
         })
 
-        self.client.delete(docId1)
-        self.client.delete(docId2)
-        self.client.delete(docId3)
+        self.client.delete(docIds)
         self.client.deleteIndex('documentsByTitle')
 
         self.assertTrue("Results" in results)

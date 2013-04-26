@@ -14,17 +14,34 @@ class client(object):
         self.port = port
         self.url = 'http://{0}:{1}'.format(host, port)
 
-    def store(self, document):
-        return s.storer(self, document).store()
+    def store(self, documents):
+        documentIds = []
+
+        for item in documents:
+            documentIds.append(s.storer(self, item).store())
+
+        return documentIds
 
     def update(self, document, documentId):
         return s.storer(self, document).update(documentId)
 
-    def delete(self, documentId):
-        return d.deleter(self, documentId).delete()
+    def delete(self, documentIds):
 
-    def load(self, documentId):
-        return l.loader(self, documentId).load()
+        deleted = False
+
+        for docId in documentIds:
+            deleted = d.deleter(self, docId).delete()
+
+        return deleted
+
+    def load(self, documentIds):
+
+        results = []
+
+        for docId in documentIds:
+            results.append(l.loader(self, docId).load())
+
+        return results
 
     def createIndex(self, index, indexId):
         return i.indexer(self, indexId).index(index)

@@ -12,63 +12,70 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_it_is_possible_to_store_a_new_document(self):
+    def test_it_is_possible_to_store_documents(self):
 
-        documentId = None
-        documentId = self.client.store({
+        documentIds = None
+        documentIds = self.client.store([{
             "title": "test document"
-        })
+        }, {
+            "title": "test document 2"
+        }])
 
-        self.assertNotEqual(documentId, None)
-        self.client.delete(documentId)
+        self.assertNotEqual(documentIds[0], None)
+        self.assertNotEqual(documentIds[1], None)
+        self.client.delete(documentIds)
 
-    def test_it_is_possible_to_delete_a_document(self):
+    def test_it_is_possible_to_delete_documents(self):
 
-        documentId = None
-        documentId = self.client.store({
+        documentIds = None
+        documentIds = self.client.store([{
             "title": "test document"
-        })
+        }, {
+            "title": "test document 2"
+        }])
 
         result = None
-        result = self.client.delete(documentId)
+        result = self.client.delete(documentIds)
 
         self.assertEqual(result, True)
 
-    def test_it_is_possible_to_load_an_existing_document(self):
+    def test_it_is_possible_to_load_documents(self):
 
-        documentId = None
-        documentId = self.client.store({
-            "title": "test document"    
-        })
+        documentIds = None
+        documentIds = self.client.store([{
+            "title": "test document"
+        }, {
+            "title": "test document 2"
+        }])
 
-        result = None
-        result = self.client.load(documentId)
+        results = None
+        results = self.client.load(documentIds)
 
-        containsKey = "title" in result
-
-        self.assertEqual("test document", result["title"])
-        self.client.delete(documentId)
+        self.assertEqual("test document", results[0]["title"])
+        self.assertEqual("test document 2", results[1]["title"])
+        
+        self.client.delete(documentIds)
 
     def test_it_is_possible_to_update_an_existing_document(self):
 
-        documentId = None
-        documentId = self.client.store({
-            "title": "test document"    
-        })
+        documentIds = None
+        documentIds = self.client.store([{
+            "title": "test document"
+        }])
 
-        result = None
-        result = self.client.load(documentId)
+        results = None
+        results = self.client.load(documentIds)
 
-        if("title" in result):
-            result["title"] = "test document update"
+        if("title" in results[0]):
+            results[0]["title"] = "test document update"
 
-        self.client.update(result, documentId)
+        self.client.update(results[0], documentIds[0])
 
-        result = None
-        result = self.client.load(documentId)
+        results = None
+        results = self.client.load(documentIds)
 
-        if("title" in result):
-            result["title"] = "test document update"
+        if("title" in results[0]):
+            results[0]["title"] = "test document update"
 
-        self.assertEqual("test document update", result["title"])
-        self.client.delete(documentId)
+        self.assertEqual("test document update", results[0]["title"])
+        self.client.delete(documentIds)

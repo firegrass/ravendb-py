@@ -24,17 +24,21 @@ Create a client like so:
 
 	client = rdb('localhost', 'test', 8080)
 
-Store a document:
+Store documents:
 
-	client.store({
+	client.store([{
         "title": "test document",
         "deleted": True,
         "type": "TestDoc"
-    })
+    }])
 
-Delete a document:
+Load documents:
 
- 	client.delete(documentId)
+	results = self.client.load(documentIds)
+
+Delete documents:
+
+ 	client.delete(documentIds)
 
 Create an index:
 
