@@ -22,8 +22,20 @@ class client(object):
 
         return documentIds
 
-    def update(self, document, documentId):
-        return s.storer(self, document).update(documentId)
+    def update(self, updates):
+
+        documentIds = []
+        for update in updates:
+            hasKey = 'doc', 'id' in update
+            if not hasKey:
+                raise Exception(
+                    'Update requires a document and an id'
+                )
+            documentIds.append(
+                s.storer(self, update["doc"]).update(update["id"])
+            )
+
+        return documentIds
 
     def delete(self, documentIds):
 

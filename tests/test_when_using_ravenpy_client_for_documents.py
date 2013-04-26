@@ -56,7 +56,7 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
         
         self.client.delete(documentIds)
 
-    def test_it_is_possible_to_update_an_existing_document(self):
+    def test_it_is_possible_to_update_documents(self):
 
         documentIds = None
         documentIds = self.client.store([{
@@ -69,7 +69,10 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
         if("title" in results[0]):
             results[0]["title"] = "test document update"
 
-        self.client.update(results[0], documentIds[0])
+        self.client.update([{
+            "id": documentIds[0],
+            "doc": results[0]
+        }])
 
         results = None
         results = self.client.load(documentIds)
