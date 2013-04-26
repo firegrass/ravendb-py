@@ -52,8 +52,7 @@ Create an index:
 Query the index:
 
 	results = client.query('documentsByState', {
-		'deleted': True,
-		'type': 'TestDoc'
+		'deleted': True
 	})
 
 Delete the index:
