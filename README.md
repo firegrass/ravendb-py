@@ -1,6 +1,8 @@
 RavenPy
 =======
 
+A python client for RavenDB
+
 Usage:
 
 Create a client like so:
@@ -57,8 +59,6 @@ Query the index:
 Delete the index:
 
 	client.deleteIndex('documentsByTitle')
-
-A python client for RavenDB
 
 To run tests install nose:
 
