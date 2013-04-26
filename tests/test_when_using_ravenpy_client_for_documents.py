@@ -53,7 +53,7 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
 
         self.assertEqual("test document", results[0]["title"])
         self.assertEqual("test document 2", results[1]["title"])
-        
+
         self.client.delete(documentIds)
 
     def test_it_is_possible_to_update_documents(self):
@@ -66,12 +66,15 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
         results = None
         results = self.client.load(documentIds)
 
-        if("title" in results[0]):
-            results[0]["title"] = "test document update"
+        doc = results[0]
+        docId = documentIds[0]
+
+        if("title" in doc):
+            doc["title"] = "test document update"
 
         self.client.update([{
-            "id": documentIds[0],
-            "doc": results[0]
+            "id": docId,
+            "doc": doc
         }])
 
         results = None

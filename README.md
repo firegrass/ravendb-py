@@ -36,6 +36,18 @@ Load documents:
 
 	results = self.client.load(documentIds)
 
+Update documents:
+
+    doc = results[0]
+    docId = documentIds[0]
+
+    doc["title"] = "test document update"
+
+    self.client.update([{
+        "id": docId,
+        "doc": doc
+    }])
+
 Delete documents:
 
  	client.delete(documentIds)
