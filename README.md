@@ -59,12 +59,6 @@ Delete the index:
 
 	client.deleteIndex('documentsByTitle')
 
-Stale Results:
-
-	Querying an index can return stale results. By default RavenPy will query a maximum of 10 times every 100 milliseconds to try and get non stale results. After this time it will return whatever results it can. To change this configuration:
-
-	client.config
-
 To run tests install nose:
 
     pip install nose
