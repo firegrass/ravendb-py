@@ -6,6 +6,7 @@ from documents import storer as s
 from documents import deleter as d
 from documents import loader as l
 from indexes import indexer as i
+from indexes import querier as q
 
 
 class client(object):
@@ -68,8 +69,8 @@ class client(object):
         return i.indexer(self, indexId).delete()
 
     def query(self, indexId, query):
-        indexer = i.indexer(self, indexId)
-        response = indexer.query(query)
+        querier = q.querier(self, indexId)
+        response = querier.query(query)
 
         attempt = 0
         maxAttempts = self.config.maxAttemptsToWaitForNonStaleResults
@@ -79,7 +80,7 @@ class client(object):
                 time.sleep(self.config.secondsToWaitForNonStaleResults)
                 if attempt <= maxAttempts:
                     attempt = attempt + 1
-                    response = indexer.query(query)
+                    response = querier.query(query)
                 else:
                     return response
 
