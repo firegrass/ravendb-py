@@ -1,5 +1,7 @@
 import json
 import requests
+import time
+from config import config as cfg
 from documents import storer as s
 from documents import deleter as d
 from documents import loader as l
@@ -13,6 +15,10 @@ class client(object):
         self.database = database
         self.port = port
         self.url = 'http://{0}:{1}'.format(host, port)
+        self.config = cfg()
+
+    def configure(self, configuration):
+        self.config = configuration
 
     def store(self, documents):
         documentIds = []
@@ -62,4 +68,19 @@ class client(object):
         return i.indexer(self, indexId).delete()
 
     def query(self, indexId, query):
-        return i.indexer(self, indexId).query(query)
+        indexer = i.indexer(self, indexId)
+        response = indexer.query(query)
+
+        attempt = 0
+        maxAttempts = self.config.maxAttemptsToWaitForNonStaleResults
+
+        if self.config.waitForNonStaleResults:
+            while response["IsStale"] is True:
+                time.sleep(self.config.secondsToWaitForNonStaleResults)
+                if attempt <= maxAttempts:
+                    attempt = attempt + 1
+                    response = indexer.query(query)
+                else:
+                    return response
+
+        return response

@@ -79,9 +79,6 @@ class indexer(object):
             response = request.json()
 
             if 'TotalResults' in response:
-                while response["IsStale"] is True:
-                    response = self.query(query)
-
                 return response
             else:
                 raise Exception(
