@@ -2,11 +2,8 @@ import json
 import requests
 import time
 from config import config as cfg
-from documents import storer as s
-from documents import deleter as d
-from documents import loader as l
-from indexes import indexer as i
-from indexes import querier as q
+from commands import commands as commands
+from queries import queries as queries
 
 
 class client(object):
@@ -18,6 +15,7 @@ class client(object):
         self.url = 'http://{0}:{1}'.format(host, port)
         self.config = cfg()
         self.commands = commands(self)
+        self.queries = queries(self)
 
     def configure(self, configuration):
         self.config = configuration
@@ -38,72 +36,7 @@ class client(object):
         return self.commands.deleteIndex(indexId)
 
     def load(self, documentIds):
-
-        results = []
-
-        for docId in documentIds:
-            results.append(l.loader(self, docId).load())
-
-        return results
+        return self.queries.load(documentIds)
 
     def query(self, indexId, query):
-        querier = q.querier(self, indexId)
-        response = querier.query(query)
-
-        attempt = 0
-        maxAttempts = self.config.maxAttemptsToWaitForNonStaleResults
-
-        if self.config.waitForNonStaleResults:
-            while response["IsStale"] is True:
-                time.sleep(self.config.secondsToWaitForNonStaleResults)
-                if attempt <= maxAttempts:
-                    attempt = attempt + 1
-                    response = querier.query(query)
-                else:
-                    return response
-
-        return response
-
-
-class commands(object):
-
-    def __init__(self, client):
-        self._client = client
-
-    def store(self, documents):
-        documentIds = []
-
-        for item in documents:
-            documentIds.append(s.storer(self._client, item).store())
-
-        return documentIds
-
-    def update(self, updates):
-
-        documentIds = []
-        for update in updates:
-            hasKey = 'doc', 'id' in update
-            if not hasKey:
-                raise Exception(
-                    'Update requires a document and an id'
-                )
-            documentIds.append(
-                s.storer(self._client, update["doc"]).update(update["id"])
-            )
-
-        return documentIds
-
-    def delete(self, documentIds):
-
-        deleted = False
-
-        for docId in documentIds:
-            deleted = d.deleter(self._client, docId).delete()
-
-        return deleted
-
-    def createIndex(self, index, indexId):
-        return i.indexer(self._client, indexId).index(index)
-
-    def deleteIndex(self, indexId):
-        return i.indexer(self._client, indexId).delete()
+        return self.queries.query(indexId, query)
