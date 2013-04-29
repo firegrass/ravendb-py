@@ -17,25 +17,25 @@ class client(object):
         self.port = port
         self.url = 'http://{0}:{1}'.format(host, port)
         self.config = cfg()
-        self.commands = commands()
+        self.commands = commands(self)
 
     def configure(self, configuration):
         self.config = configuration
 
     def store(self, documents):
-        return commands.store(documents)
+        return self.commands.store(documents)
 
     def update(self, updates):
-        return commands.update(updates)
+        return self.commands.update(updates)
 
     def delete(self, documentIds):
-        return commands.delete(documentIds)
+        return self.commands.delete(documentIds)
 
     def createIndex(self, index, indexId):
-        return command.createIndex(index, indexId)
+        return self.commands.createIndex(index, indexId)
 
     def deleteIndex(self, indexId):
-        return command.deleteIndex(indexId)
+        return self.commands.deleteIndex(indexId)
 
     def load(self, documentIds):
 
@@ -67,14 +67,14 @@ class client(object):
 
 class commands(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, client):
+        self._client = client
 
     def store(self, documents):
         documentIds = []
 
         for item in documents:
-            documentIds.append(s.storer(self, item).store())
+            documentIds.append(s.storer(self._client, item).store())
 
         return documentIds
 
@@ -88,7 +88,7 @@ class commands(object):
                     'Update requires a document and an id'
                 )
             documentIds.append(
-                s.storer(self, update["doc"]).update(update["id"])
+                s.storer(self._client, update["doc"]).update(update["id"])
             )
 
         return documentIds
@@ -98,12 +98,12 @@ class commands(object):
         deleted = False
 
         for docId in documentIds:
-            deleted = d.deleter(self, docId).delete()
+            deleted = d.deleter(self._client, docId).delete()
 
         return deleted
 
     def createIndex(self, index, indexId):
-        return i.indexer(self, indexId).index(index)
+        return i.indexer(self._client, indexId).index(index)
 
     def deleteIndex(self, indexId):
-        return i.indexer(self, indexId).delete()
+        return i.indexer(self._client, indexId).delete()
