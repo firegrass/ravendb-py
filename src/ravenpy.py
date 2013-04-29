@@ -17,9 +17,58 @@ class client(object):
         self.port = port
         self.url = 'http://{0}:{1}'.format(host, port)
         self.config = cfg()
+        self.commands = commands()
 
     def configure(self, configuration):
         self.config = configuration
+
+    def store(self, documents):
+        return commands.store(documents)
+
+    def update(self, updates):
+        return commands.update(updates)
+
+    def delete(self, documentIds):
+        return commands.delete(documentIds)
+
+    def createIndex(self, index, indexId):
+        return command.createIndex(index, indexId)
+
+    def deleteIndex(self, indexId):
+        return command.deleteIndex(indexId)
+
+    def load(self, documentIds):
+
+        results = []
+
+        for docId in documentIds:
+            results.append(l.loader(self, docId).load())
+
+        return results
+
+    def query(self, indexId, query):
+        querier = q.querier(self, indexId)
+        response = querier.query(query)
+
+        attempt = 0
+        maxAttempts = self.config.maxAttemptsToWaitForNonStaleResults
+
+        if self.config.waitForNonStaleResults:
+            while response["IsStale"] is True:
+                time.sleep(self.config.secondsToWaitForNonStaleResults)
+                if attempt <= maxAttempts:
+                    attempt = attempt + 1
+                    response = querier.query(query)
+                else:
+                    return response
+
+        return response
+
+
+class commands(object):
+
+    def __init__(self):
+        pass
 
     def store(self, documents):
         documentIds = []
@@ -53,35 +102,8 @@ class client(object):
 
         return deleted
 
-    def load(self, documentIds):
-
-        results = []
-
-        for docId in documentIds:
-            results.append(l.loader(self, docId).load())
-
-        return results
-
     def createIndex(self, index, indexId):
         return i.indexer(self, indexId).index(index)
 
     def deleteIndex(self, indexId):
         return i.indexer(self, indexId).delete()
-
-    def query(self, indexId, query):
-        querier = q.querier(self, indexId)
-        response = querier.query(query)
-
-        attempt = 0
-        maxAttempts = self.config.maxAttemptsToWaitForNonStaleResults
-
-        if self.config.waitForNonStaleResults:
-            while response["IsStale"] is True:
-                time.sleep(self.config.secondsToWaitForNonStaleResults)
-                if attempt <= maxAttempts:
-                    attempt = attempt + 1
-                    response = querier.query(query)
-                else:
-                    return response
-
-        return response
