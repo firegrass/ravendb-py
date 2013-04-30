@@ -1,5 +1,6 @@
 import json
 import requests
+import bunch
 
 
 class querier(object):
@@ -30,7 +31,9 @@ class querier(object):
             response = request.json()
 
             if 'TotalResults' in response:
-                return response
+                loaded = bunch.Bunch()
+                loaded.update(response)
+                return loaded
             else:
                 raise Exception(
                     'Query response unexpected Http: {0}'.format(

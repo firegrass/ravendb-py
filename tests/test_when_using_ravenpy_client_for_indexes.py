@@ -61,13 +61,12 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
         }
 
         self.client.createIndex(index, 'documentsByState')
-        results = self.client.query('documentsByState', {'deleted': False})
+        query = self.client.query('documentsByState', {'deleted': False})
 
         self.client.delete(docIds)
         self.client.deleteIndex('documentsByTitle')
 
-        self.assertTrue("Results" in results)
-        self.assertEqual(len(results["Results"]), 2)
+        self.assertEqual(len(query.Results), 2)
 
     def test_it_is_possible_to_query_an_index_with_multiple_arguments(self):
 
@@ -91,7 +90,7 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
         }
 
         self.client.createIndex(index, 'documentsByState')
-        results = self.client.query('documentsByState', {
+        query = self.client.query('documentsByState', {
             'deleted': True,
             'type': 'DocType'
         })
@@ -99,5 +98,4 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
         self.client.delete(docIds)
         self.client.deleteIndex('documentsByTitle')
 
-        self.assertTrue("Results" in results)
-        self.assertEqual(len(results["Results"]), 1)
+        self.assertEqual(len(query.Results), 1)

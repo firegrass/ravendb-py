@@ -28,7 +28,7 @@ Update documents:
     doc = results[0]
     docId = documentIds[0]
 
-    doc["title"] = "test document update"
+    doc.title = "test document update"
 
     self.client.update([{
         "id": docId,
@@ -63,9 +63,10 @@ To run tests install nose:
 
     pip install nose
 
-The library also uses requests:
+The library also uses requests and bunch:
 
 	pip install requests
+	pip install bunch
 
 With nose and requests installed
 
