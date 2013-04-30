@@ -1,5 +1,6 @@
 import json
 import requests
+import bunch
 
 
 class loader(object):
@@ -18,7 +19,9 @@ class loader(object):
         )
 
         if request.status_code == 200:
-            return request.json()
+            loaded = bunch.Bunch()
+            loaded.update(request.json())
+            return loaded
         else:
             raise Exception(
                 'Error getting document Http :{0}'.format(
