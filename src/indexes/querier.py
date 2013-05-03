@@ -33,7 +33,8 @@ class querier(object):
             if 'TotalResults' in response:
                 results = b.buncher({
                     "IsStale": response["IsStale"],
-                    "documents": []}).bunch()
+                    "documents": []}
+                ).bunch()
 
                 for value in response["Results"]:
                     results.documents.append(
