@@ -38,5 +38,8 @@ class client(object):
     def load(self, documentIds):
         return self.queries.load(documentIds)
 
+    def bulkLoad(self, documentIds):
+        return self.queries.bulkLoad(documentIds)
+
     def query(self, indexId, query):
         return self.queries.query(indexId, query)

@@ -56,6 +56,23 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
 
         self.client.delete(documentIds)
 
+    def test_it_is_possible_to_bulk_load_documents(self):
+
+        documentIds = None
+        documentIds = self.client.store([{
+            "title": "test document"
+        }, {
+            "title": "test document 2"
+        }])
+
+        results = None
+        results = self.client.bulkLoad(documentIds)
+
+        self.assertEqual("test document", results[0].title)
+        self.assertEqual("test document 2", results[1].title)
+
+        self.client.delete(documentIds)
+
     def test_it_is_possible_to_update_documents(self):
 
         documentIds = None
