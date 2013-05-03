@@ -3,7 +3,6 @@ from documents import loader as l
 from documents import bulkloader as bl
 from indexes import querier as q
 
-
 class queries(object):
 
     def __init__(self, client):

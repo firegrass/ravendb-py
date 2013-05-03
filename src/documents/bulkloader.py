@@ -1,6 +1,6 @@
 import json
 import requests
-import bunch
+from support import buncher as b
 
 
 class bulkloader(object):
@@ -23,9 +23,7 @@ class bulkloader(object):
             results = []
 
             for value in request.json()["Results"]:
-                loaded = bunch.Bunch()
-                loaded.update(value)
-                results.append(loaded)
+                results.append(b.buncher(value).bunch())
 
             return results
         else:

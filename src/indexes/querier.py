@@ -1,6 +1,6 @@
 import json
 import requests
-import bunch
+from support import buncher as b
 
 
 class querier(object):
@@ -31,13 +31,14 @@ class querier(object):
             response = request.json()
 
             if 'TotalResults' in response:
-                results = bunch.Bunch()
-                results.update({"IsStale": response["IsStale"], "documents": []})
+                results = b.buncher({
+                    "IsStale": response["IsStale"],
+                    "documents": []}).bunch()
 
                 for value in response["Results"]:
-                    loaded = bunch.Bunch()
-                    loaded.update(value)
-                    results.documents.append(loaded)
+                    results.documents.append(
+                        b.buncher(value).bunch()
+                    )
 
                 return results
 
