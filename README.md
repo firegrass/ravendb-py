@@ -23,6 +23,10 @@ Load documents:
 
 	results = self.client.load(documentIds)
 
+Bulk Load documents:
+
+	results = self.client.bulkLoad(documentIds)
+
 Update documents:
 
     doc = results[0]
