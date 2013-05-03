@@ -31,9 +31,16 @@ class querier(object):
             response = request.json()
 
             if 'TotalResults' in response:
-                loaded = bunch.Bunch()
-                loaded.update(response)
-                return loaded
+                results = bunch.Bunch()
+                results.update({"IsStale": response["IsStale"], "documents": []})
+
+                for value in response["Results"]:
+                    loaded = bunch.Bunch()
+                    loaded.update(value)
+                    results.documents.append(loaded)
+
+                return results
+
             else:
                 raise Exception(
                     'Query response unexpected Http: {0}'.format(

@@ -65,8 +65,8 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
 
         self.client.delete(docIds)
         self.client.deleteIndex('documentsByTitle')
-
-        self.assertEqual(len(query.Results), 2)
+        self.assertEqual(query.documents[0].title, 'test document')
+        self.assertEqual(query.documents[1].title, 'test document')
 
     def test_it_is_possible_to_query_an_index_with_multiple_arguments(self):
 
@@ -98,4 +98,4 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
         self.client.delete(docIds)
         self.client.deleteIndex('documentsByTitle')
 
-        self.assertEqual(len(query.Results), 1)
+        self.assertEqual(query.documents[0].title, 'test document')
