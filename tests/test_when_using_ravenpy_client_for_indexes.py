@@ -54,6 +54,8 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
             "type": "TestDoc"
         }])
 
+        self.client.save()
+
         index = {
             'alias': 'doc',
             'where': 'doc.type=="TestDoc"',
@@ -83,6 +85,8 @@ class test_when_using_ravenpy_client_for_indexes(unittest.TestCase):
             "deleted": False,
             "type": "TestDoc"
         }])
+
+        self.client.save()
 
         index = {
             'alias': 'doc',

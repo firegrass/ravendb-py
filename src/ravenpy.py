@@ -4,6 +4,7 @@ import time
 from config import config as cfg
 from commands import commands as commands
 from queries import queries as queries
+from support import idgenerator as idgenerator
 
 
 class client(object):
@@ -16,12 +17,29 @@ class client(object):
         self.config = cfg()
         self.commands = commands(self)
         self.queries = queries(self)
+        self._cache = []
 
     def configure(self, configuration):
         self.config = configuration
 
+    def save(self):
+        self.commands.bulk(self._cache)
+
     def store(self, documents):
-        return self.commands.store(documents)
+
+        ids = []
+
+        for document in documents:
+            id = str(idgenerator.guid().Create())
+            ids.append(id)
+            self._cache.append({
+                "action": "PUT",
+                "id": id,
+                "doc": document,
+                "metadata": {}
+            })
+
+        return ids
 
     def update(self, updates):
         return self.commands.update(updates)
@@ -38,8 +56,8 @@ class client(object):
     def load(self, documentIds):
         return self.queries.load(documentIds)
 
-    def bulkLoad(self, documentIds):
-        return self.queries.bulkLoad(documentIds)
+    def loadAll(self, documentIds):
+        return self.queries.loadAll(documentIds)
 
     def query(self, indexId, query):
         return self.queries.query(indexId, query)

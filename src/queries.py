@@ -1,7 +1,7 @@
 import time
 from documents import loader as l
-from documents import bulkloader as bl
 from indexes import querier as q
+
 
 class queries(object):
 
@@ -13,13 +13,13 @@ class queries(object):
         results = []
 
         for docId in documentIds:
-            results.append(l.loader(self._client, docId).load())
+            results.append(l.loader(self._client).load(docId))
 
         return results
 
-    def bulkLoad(self, documentIds):
+    def loadAll(self, documentIds):
 
-        return bl.bulkloader(self._client, documentIds).load()
+        return l.loader(self._client).loadAll(documentIds)
 
     def query(self, indexId, query):
         querier = q.querier(self._client, indexId)

@@ -21,6 +21,8 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
             "title": "test document 2"
         }])
 
+        self.client.save()
+
         self.assertNotEqual(documentIds[0], None)
         self.assertNotEqual(documentIds[1], None)
         self.client.delete(documentIds)
@@ -33,6 +35,8 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
         }, {
             "title": "test document 2"
         }])
+
+        self.client.save()
 
         result = None
         result = self.client.delete(documentIds)
@@ -47,6 +51,8 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
         }, {
             "title": "test document 2"
         }])
+
+        self.client.save()
 
         results = None
         results = self.client.load(documentIds)
@@ -65,8 +71,10 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
             "title": "test document 2"
         }])
 
+        self.client.save()
+
         results = None
-        results = self.client.bulkLoad(documentIds)
+        results = self.client.loadAll(documentIds)
 
         self.assertEqual("test document", results[0].title)
         self.assertEqual("test document 2", results[1].title)
@@ -79,6 +87,8 @@ class test_when_using_ravenpy_client_for_documents(unittest.TestCase):
         documentIds = self.client.store([{
             "title": "test document"
         }])
+
+        self.client.save()
 
         results = None
         results = self.client.load(documentIds)

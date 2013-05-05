@@ -1,6 +1,7 @@
 from documents import storer as s
 from documents import deleter as d
 from documents import loader as l
+from documents import bulk as b
 from indexes import indexer as i
 
 
@@ -8,6 +9,9 @@ class commands(object):
 
     def __init__(self, client):
         self._client = client
+
+    def bulk(self, transactions):
+        b.bulk(self._client, transactions).process()
 
     def store(self, documents):
         documentIds = []
