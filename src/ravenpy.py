@@ -1,51 +1,47 @@
-import json
-import requests
-import time
 from config import config as cfg
 from commands import commands as commands
 from queries import queries as queries
 from support import idgenerator as idgenerator
+from documents import cache as c
 
 
-class client(object):
+class store(object):
 
     def __init__(self, host, database, port):
         self.host = host
         self.database = database
         self.port = port
         self.url = 'http://{0}:{1}'.format(host, port)
+
+    def createSession(self):
+        return session(self.url, self.database)
+
+
+class session(object):
+
+    def __init__(self, url, database):
+        self.url = url
+        self.database = database
         self.config = cfg()
         self.commands = commands(self)
         self.queries = queries(self)
-        self._cache = []
+        self._cache = c.cache(idgenerator.guid())
 
     def configure(self, configuration):
         self.config = configuration
 
     def save(self):
-        self.commands.bulk(self._cache)
+        self.commands.bulk(self._cache.list())
+        self._cache.reset()
 
     def store(self, documents):
-
-        ids = []
-
-        for document in documents:
-            id = str(idgenerator.guid().Create())
-            ids.append(id)
-            self._cache.append({
-                "action": "PUT",
-                "id": id,
-                "doc": document,
-                "metadata": {}
-            })
-
-        return ids
+        return self._cache.add(documents)
 
     def update(self, updates):
-        return self.commands.update(updates)
+        return self._cache.update(updates)
 
     def delete(self, documentIds):
-        return self.commands.delete(documentIds)
+        self._cache.delete(documentIds)
 
     def createIndex(self, index, indexId):
         return self.commands.createIndex(index, indexId)
@@ -55,9 +51,6 @@ class client(object):
 
     def load(self, documentIds):
         return self.queries.load(documentIds)
-
-    def loadAll(self, documentIds):
-        return self.queries.loadAll(documentIds)
 
     def query(self, indexId, query):
         return self.queries.query(indexId, query)

@@ -9,17 +9,7 @@ class queries(object):
         self._client = client
 
     def load(self, documentIds):
-
-        results = []
-
-        for docId in documentIds:
-            results.append(l.loader(self._client).load(docId))
-
-        return results
-
-    def loadAll(self, documentIds):
-
-        return l.loader(self._client).loadAll(documentIds)
+        return l.loader(self._client).load(documentIds)
 
     def query(self, indexId, query):
         querier = q.querier(self._client, indexId)
