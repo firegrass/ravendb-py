@@ -5,11 +5,15 @@ A python client for RavenDB
 
 Usage:
 
-Create a client like so:
+Create a document store like so:
 
-	from ravenpy import client as rdb
+	from ravenpy import store as store
 
-	client = rdb('localhost', 'test', 8080)
+	client = store('http://localhost:8080', 'test')
+
+Open a session:
+
+	session = client.createSession()
 
 Store documents:
 
@@ -21,11 +25,7 @@ Store documents:
 
 Load documents:
 
-	results = self.client.load(documentIds)
-
-Bulk Load documents:
-
-	results = self.client.bulkLoad(documentIds)
+	results = client.load(documentIds)
 
 Update documents:
 
@@ -34,7 +34,7 @@ Update documents:
 
     doc.title = "test document update"
 
-    self.client.update([{
+    client.update([{
         "id": docId,
         "doc": doc
     }])
