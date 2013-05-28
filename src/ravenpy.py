@@ -7,11 +7,9 @@ from documents import cache as c
 
 class store(object):
 
-    def __init__(self, host, database, port):
-        self.host = host
+    def __init__(self, url, database):
         self.database = database
-        self.port = port
-        self.url = 'http://{0}:{1}'.format(host, port)
+        self.url = url
 
     def createSession(self):
         return session(self.url, self.database)

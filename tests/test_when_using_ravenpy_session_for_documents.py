@@ -6,7 +6,7 @@ from ravenpy import store as store
 class test_when_using_ravenpy_session_for_documents(unittest.TestCase):
 
     def setUp(self):
-        self.session = store('localhost', 'test', 8080).createSession()
+        self.session = store('http://localhost:8080', 'test').createSession()
         pass
 
     def tearDown(self):
