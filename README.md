@@ -17,15 +17,17 @@ Open a session:
 
 Store documents:
 
-	client.store([{
+	session.store([{
         "title": "test document",
         "deleted": True,
         "type": "TestDoc"
     }])
 
+	session.save()
+
 Load documents:
 
-	results = client.load(documentIds)
+	results = session.load(documentIds)
 
 Update documents:
 
@@ -34,14 +36,17 @@ Update documents:
 
     doc.title = "test document update"
 
-    client.update([{
+    session.update([{
         "id": docId,
         "doc": doc
     }])
 
+    session.save()
+
 Delete documents:
 
- 	client.delete(documentIds)
+ 	session.delete(documentIds)
+ 	session.save()
 
 Create an index:
 
@@ -51,17 +56,17 @@ Create an index:
 		'select': 'new { doc.deleted }'
 	}
 
-    client.createIndex(index, 'documentsByState')
+    session.createIndex(index, 'documentsByState')
 
 Query the index:
 
-	results = client.query('documentsByState', {
+	results = session.query('documentsByState', {
 		'deleted': True
 	})
 
 Delete the index:
 
-	client.deleteIndex('documentsByTitle')
+	session.deleteIndex('documentsByTitle')
 
 To run tests install nose:
 
