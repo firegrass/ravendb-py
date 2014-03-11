@@ -1,12 +1,13 @@
 import ravenpy
 import unittest
+import test_base
 from ravenpy import store as store
 
 
-class test_when_using_ravenpy_session_for_documents(unittest.TestCase):
+class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
 
     def setUp(self):
-        self.session = store('http://localhost:8080', 'test').createSession()
+        self.session = self.get_store().createSession()
         pass
 
     def tearDown(self):

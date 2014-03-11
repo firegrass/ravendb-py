@@ -1,13 +1,13 @@
 import ravenpy
 import unittest
+import test_base
 from ravenpy import store as store
 from config import config as cfg
 
-
-class test_when_configuring_ravenpy_session(unittest.TestCase):
+class test_when_configuring_ravenpy_session(test_base.TestCase):
 
     def setUp(self):
-        self.session = store('http://localhost:8080', 'test').createSession()
+        self.session = self.get_store().createSession()
         pass
 
     def tearDown(self):
