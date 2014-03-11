@@ -21,7 +21,7 @@ setup(
     author='Mark Woodhall',
     author_email='mark.woodhall@gmail.com',
     url='https://github.com/firegrass/RavenPy',
-    platforms='any'
+    platforms='any',
     packages=['RavenPy'],
     install_requires = [
         'requests>=2.2.1',
