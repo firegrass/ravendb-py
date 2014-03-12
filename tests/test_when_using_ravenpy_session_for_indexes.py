@@ -1,8 +1,6 @@
 import ravenpy
 import unittest
 import test_base
-from ravenpy import store as store
-
 
 class test_when_using_ravenpy_session_for_indexes(test_base.TestCase):
 

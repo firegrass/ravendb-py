@@ -1,8 +1,7 @@
 import ravenpy
 import unittest
 import test_base
-from ravenpy import store as store
-from config import config as cfg
+from ravenpy.config import config as cfg
 
 class test_when_configuring_ravenpy_session(test_base.TestCase):
 
