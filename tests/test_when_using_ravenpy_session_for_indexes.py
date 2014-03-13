@@ -1,4 +1,4 @@
-import ravenpy
+import ravendb
 import unittest
 import test_base
 

@@ -7,26 +7,34 @@ from documents import cache as c
 
 class store(object):
 
-    def __init__(self, url, database):
+    def __init__(self, url='http://localhost:8080', database='test',
+                 waitForNonStaleResults=False,
+                 secondsToWaitForNonStaleResults=0.5,
+                 maxAttemptsToWaitForNonStaleResults=10):
         self.database = database
         self.url = url
+        self.config = cfg()
+        self.config.waitForNonStaleResults = waitForNonStaleResults
+        self.config.secondsToWaitForNonStaleResults = secondsToWaitForNonStaleResults
+        self.config.maxAttemptsToWaitForNonStaleResults = maxAttemptsToWaitForNonStaleResults
 
     def createSession(self):
-        return session(self.url, self.database)
+        return session(self.url, self.database, self.config)
 
 
 class session(object):
 
-    def __init__(self, url, database):
+    def __init__(self, url, database, config):
         self.url = url
         self.database = database
-        self.config = cfg()
+        self.config = config
         self.commands = commands(self)
         self.queries = queries(self)
         self._cache = c.cache(idgenerator.guid())
 
-    def configure(self, configuration):
-        self.config = configuration
+# Shouldn't be changing a session configuration, create a new one
+#    def configure(self, configuration):
+#        self.config = configuration
 
     def save(self):
         self.commands.bulk(self._cache.list())

@@ -11,18 +11,18 @@ platform_version = list(platform.python_version_tuple())[0:2]
 if platform_version[0] != '3' and platform_version != ['2', '7']:
     tests_require.append('unittest2')
 
-long_description = ('RavenPy is a pure-Python implementation of for talking to RavenDB')
+long_description = ('ravendb is a pure-Python implementation of for talking to RavenDB')
 
 setup(
-    name='RavenPy',
+    name='ravendb',
     version='0.1',
     description='Python RavenDB client',
     long_description=long_description,
     author='Mark Woodhall',
     author_email='mark.woodhall@gmail.com',
-    url='https://github.com/firegrass/RavenPy',
+    url='https://github.com/firegrass/ravendb-py',
     platforms='any',
-    packages=['RavenPy'],
+    packages=['ravendb'],
     install_requires = [
         'requests>=2.2.1',
         'bunch>=1.0.1'

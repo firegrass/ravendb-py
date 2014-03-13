@@ -7,9 +7,9 @@ Usage:
 
 Create a document store like so:
 
-	from ravenpy import store as store
+	from ravendb
 
-	client = store('http://localhost:8080', 'test')
+	client = store(url='http://localhost:8080', db='test')
 
 Open a session:
 

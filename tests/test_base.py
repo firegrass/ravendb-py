@@ -5,11 +5,17 @@ try:
 except ImportError:
     import unittest
 import yaml
-import ravenpy
+import ravendb
 
 CONFIG = yaml.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'ravendb.conf')))
 
 class TestCase(unittest.TestCase):
 
     def get_store(self):
-        return ravenpy.store(CONFIG['uri'], CONFIG['db'])
+        return ravendb.store(CONFIG['uri'], CONFIG['db'])
+
+    def get_uri(self):
+        return CONFIG['uri']
+
+    def get_db(self):
+        return CONFIG['db']
