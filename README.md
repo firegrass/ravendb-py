@@ -1,4 +1,4 @@
-RavenPy
+ravendb-py
 =======
 
 A python client for RavenDB
