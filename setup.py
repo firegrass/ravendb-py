@@ -22,7 +22,7 @@ setup(
     author_email='mark.woodhall@gmail.com',
     url='https://github.com/firegrass/ravendb-py',
     platforms='any',
-    packages=['ravendb'],
+    packages=['ravendb', 'ravendb.documents', 'ravendb.indexes', 'ravendb.support'],
     install_requires = [
         'requests>=2.2.1',
         'bunch>=1.0.1'
