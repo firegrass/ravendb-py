@@ -1,6 +1,4 @@
-import json
 import requests
-#from ravendb.support import buncher as b
 
 
 class querier(object):
