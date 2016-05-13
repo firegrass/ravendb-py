@@ -14,12 +14,11 @@ class querier(object):
 
         parsedQuery = ''
         fetchPart = ''
-        for key, value in query.items():
-            if key == 'fetch':
-                for entry in query['fetch']:
-                    fetchPart = '{1}={2}&{0}'.format(fetchPart, 'fetch', entry)
-            else:
-                parsedQuery = '{1}:{2}&{0}'.format(parsedQuery, key, value)
+        for key, value in query['query'].items():
+            parsedQuery = '{1}:{2}&{0}'.format(parsedQuery, key, value)
+        if 'fetch' in query.keys():
+            for projection in query['fetch']:
+                fetchPart = '{1}={2}&{0}'.format(fetchPart, 'fetch', projection)
 
         queryUrl = '{0}/databases/{1}/indexes/{2}?query={3}{4}'.format(
                 self._client.url,
@@ -40,18 +39,6 @@ class querier(object):
             response = request.json()
 
             if 'TotalResults' in response:
-                """results = b.buncher({
-                    "IsStale": response["IsStale"],
-                    "documents": []}
-                ).bunch()
-
-                for value in response["Results"]:
-                    results.documents.append(
-                        b.buncher(value).bunch()
-                    )
-
-                return results
-                """
                 return response
 
             else:

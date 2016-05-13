@@ -19,13 +19,6 @@ class loader(object):
         )
 
         if request.status_code == 200:
-            """results = []
-
-            for value in request.json()["Results"]:
-                results.append(b.buncher(value).bunch())
-
-            return results
-            """
             return request.json()["Results"]
         else:
             raise Exception(
