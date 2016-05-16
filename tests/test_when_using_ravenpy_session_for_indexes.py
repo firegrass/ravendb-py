@@ -204,21 +204,19 @@ class test_when_using_ravenpy_session_for_indexes(test_base.TestCase):
             "deleted": False,
             "type": "TestDoc"
         }])
-        print(docIds)
         self.session.save()
-
         index = {
             'alias': 'doc',
             'where': 'doc.type=="TestDoc"',
-            'select': 'new { doc.deleted }'
+            'select': 'new {  doc.deleted, doc.type }'
         }
-
-        self.session.createIndex(index, 'documentsByTitle')
-        sleep(0.3)
+        print(self.session.createIndex(index, 'documentsByTitle'))
+        # without a sleep between index creation and querying, an error will be thrown.
+        sleep(1)
         query = self.session.query('documentsByTitle', {'query': {
-                'deleted': True,
-                'type': 'DocType'
-            },
+            'deleted': True,
+            'type': 'TestDoc'
+        },
             'fetch': ['title', 'type']
         })
         self.session.deleteIndex('documentsByTitle')

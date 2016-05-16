@@ -10,6 +10,7 @@ class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
     def tearDown(self):
         pass
 
+
     def test_it_is_possible_to_store_and_load_documents(self):
 
         documentIds = None
