@@ -10,6 +10,7 @@ class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
     def tearDown(self):
         pass
 
+
     def test_it_is_possible_to_store_and_load_documents(self):
 
         documentIds = None
@@ -23,8 +24,8 @@ class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
 
         documents = self.session.load(documentIds)
 
-        self.assertEqual(documents[0].title, "test document")
-        self.assertEqual(documents[1].title, "test document 2")
+        self.assertEqual(documents[0]['title'], "test document")
+        self.assertEqual(documents[1]['title'], "test document 2")
 
         self.session.delete(documentIds)
         self.session.save()
@@ -62,7 +63,7 @@ class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
         doc = results[0]
         docId = documentIds[0]
 
-        doc.title = "test document update"
+        doc['title'] = "test document update"
 
         self.session.update([{
             "id": docId,
@@ -72,8 +73,8 @@ class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
         results = None
         results = self.session.load(documentIds)
 
-        results[0].title = "test document update"
+        results[0]['title'] = "test document update"
 
-        self.assertEqual("test document update", results[0].title)
+        self.assertEqual("test document update", results[0]['title'])
         self.session.delete(documentIds)
         self.session.save()

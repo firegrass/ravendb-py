@@ -1,6 +1,5 @@
-from documents import loader as l
-from documents import bulk as b
-from indexes import indexer as i
+from .documents import bulk as b
+from .indexes import indexer as i
 
 
 class commands(object):

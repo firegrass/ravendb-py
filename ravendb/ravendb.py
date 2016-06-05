@@ -1,8 +1,8 @@
-from config import config as cfg
-from commands import commands as commands
-from queries import queries as queries
-from support import idgenerator as idgenerator
-from documents import cache as c
+from .config import config as cfg
+from .commands import commands as commands
+from .queries import queries as queries
+from .support import idgenerator as idgenerator
+from .documents import cache as c
 
 
 class store(object):
