@@ -9,21 +9,30 @@ class querier(object):
         self._client = client
         self._indexId = indexId
 
-    def query(self, query):
+    def query(self, query = '', options = {}):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
 
-        parsedQuery = ''
+        genQuery = ''
 
-        for key, value in query.items():
-            parsedQuery = '{1}:{2}&{0}'.format(parsedQuery, key, value)
+        if not isinstance(query, basestring):
+            parsedQuery = ''
+            for key, value in query.items():
+                genQuery = '{0} AND {1}:{2}'.format(parsedQuery, key, value)
+            genQuery = parsedQuery[5:]
+            options['query'] = genQuery
+        else:
+            options['query'] = query
+
+        options['start'] = 0
+        options['pageSize'] = 1024
 
         request = requests.get(
-            '{0}/databases/{1}/indexes/{2}?query={3}'.format(
+            '{0}/databases/{1}/indexes/{2}'.format(
                 self._client.url,
                 self._client.database,
                 self._indexId,
-                parsedQuery
             ),
+            params=options,
             headers=headers
         )
 

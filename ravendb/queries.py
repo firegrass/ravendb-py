@@ -11,9 +11,9 @@ class queries(object):
     def load(self, documentIds):
         return l.loader(self._client).load(documentIds)
 
-    def query(self, indexId, query):
+    def query(self, indexId, query, options={}):
         querier = q.querier(self._client, indexId)
-        response = querier.query(query)
+        response = querier.query(query, options)
 
         attempt = 0
         maxAttempts = self._client.config.maxAttemptsToWaitForNonStaleResults
