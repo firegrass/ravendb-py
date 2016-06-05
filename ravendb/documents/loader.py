@@ -1,5 +1,6 @@
 import json
 import requests
+from ravendb.support import buncher as b
 
 
 class loader(object):
@@ -18,7 +19,12 @@ class loader(object):
         )
 
         if request.status_code == 200:
-            return request.json()["Results"]
+            results = []
+
+            for value in request.json()["Results"]:
+                results.append(b.buncher(value).bunch())
+
+            return results
         else:
             raise Exception(
                 'Error getting document Http :{0}'.format(

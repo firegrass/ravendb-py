@@ -1,5 +1,6 @@
 import json
 import requests
+import sys
 
 
 class bulk(object):

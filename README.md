@@ -9,7 +9,7 @@ Create a document store like so:
 
 	import ravendb
 
-	client = ravendb.store(url='http://localhost:8080', database='test')
+	client = store(url='http://localhost:8080', database='test')
 
 Open a session:
 
@@ -27,8 +27,7 @@ Store documents:
 
 Load documents:
 
-	results = session.load(list_of_documentIds)
-
+	results = session.load(documentIds)
 
 Update documents:
 
@@ -61,31 +60,9 @@ Create an index:
 
 Query the index:
 
-	# single query argument
-	results = session.query('documentsByState', { 'query': {
-		        'deleted': True
-		    }
+	results = session.query('documentsByState', {
+		'deleted': True
 	})
-
-	# multiple arguments
-
-	results = session.query('documentsByState', { 'query': {
-		        'deleted': True,
-		        'type': "TestDoc"
-
-		    }
-	})
-
-	# Usage of projections (fetches) to only fetch particular data
-	results = session.query('documentsByState', { 'query': {
-		        'deleted': True,
-		        'type': "TestDoc"
-
-		    },
-		    'fetch' : ['title', 'type']
-	})
-
-
 
 Delete the index:
 
@@ -95,9 +72,10 @@ To run tests install nose:
 
     pip install nose
 
-The library also uses requests:
+The library also uses requests and bunch:
 
 	pip install requests
+	pip install bunch
 
 With nose and requests installed
 

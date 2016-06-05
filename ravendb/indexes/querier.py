@@ -1,4 +1,6 @@
+import json
 import requests
+from ravendb.support import buncher as b
 
 
 class querier(object):
@@ -11,25 +13,17 @@ class querier(object):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
 
         parsedQuery = ''
-        fetchPart = ''
-        for key, value in query['query'].items():
-            parsedQuery = '{1}:{2}&{0}'.format(parsedQuery, key, value)
-        if 'fetch' in query.keys():
-            for projection in query['fetch']:
-                fetchPart = '{1}={2}&{0}'.format(fetchPart, 'fetch', projection)
 
-        queryUrl = '{0}/databases/{1}/indexes/{2}?query={3}{4}'.format(
+        for key, value in query.items():
+            parsedQuery = '{1}:{2}&{0}'.format(parsedQuery, key, value)
+
+        request = requests.get(
+            '{0}/databases/{1}/indexes/{2}?query={3}'.format(
                 self._client.url,
                 self._client.database,
                 self._indexId,
-                parsedQuery,
-                fetchPart
-            )
-
-        print("URL Being used: " + queryUrl)
-
-        request = requests.get(
-            queryUrl,
+                parsedQuery
+            ),
             headers=headers
         )
 
@@ -37,7 +31,17 @@ class querier(object):
             response = request.json()
 
             if 'TotalResults' in response:
-                return response
+                results = b.buncher({
+                    "IsStale": response["IsStale"],
+                    "documents": []}
+                ).bunch()
+
+                for value in response["Results"]:
+                    results.documents.append(
+                        b.buncher(value).bunch()
+                    )
+
+                return results
 
             else:
                 raise Exception(
