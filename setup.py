@@ -28,6 +28,7 @@ setup(
         'bunch>=1.0.1'
     ],
     test_suite='nose.collector',
+    download_url = 'https://github.com/firegrass/ravendb-py/archive/e5d6f123f71ca59c0995225956e6dc32df50d26f.zip',
     keywords = "ravendb raven database",
     zip_safe=True
 )

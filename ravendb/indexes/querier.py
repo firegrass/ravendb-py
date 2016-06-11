@@ -7,31 +7,34 @@ class querier(object):
         self._client = client
         self._indexId = indexId
 
-    def query(self, query):
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+    def query(self, query = '', fetch = {}):
 
-        parsedQuery = ''
-        fetchPart = ''
-        for key, value in query['query'].items():
-            parsedQuery = '{1}:{2}&{0}'.format(parsedQuery, key, value)
-        if 'fetch' in query.keys():
-            for projection in query['fetch']:
-                fetchPart = '{1}={2}&{0}'.format(fetchPart, 'fetch', projection)
+        qs = {}
+        genQuery = ''
 
-        queryUrl = '{0}/databases/{1}/indexes/{2}?query={3}{4}'.format(
+        if not isinstance(query, basestring):
+            parsedQuery = ''
+            for key, value in query.items():
+                genQuery = '{0} AND {1}:{2}'.format(parsedQuery, key, value)
+            genQuery = parsedQuery[5:]
+            qs['query'] = genQuery
+        else:
+            qs['query'] = query
+
+        # HACK make configurable / paging?
+        qs['start'] = 0
+        qs['pageSize'] = 1024
+
+        if len(fetch) > 0:
+            qs['fetch'] = fetch
+
+        queryUrl = '{0}/databases/{1}/indexes/{2}'.format(
                 self._client.url,
                 self._client.database,
-                self._indexId,
-                parsedQuery,
-                fetchPart
+                self._indexId
             )
 
-        print("URL Being used: " + queryUrl)
-
-        request = requests.get(
-            queryUrl,
-            headers=headers
-        )
+        request = self._client._get(queryUrl, params=qs)
 
         if request.status_code == 200:
             response = request.json()

@@ -8,13 +8,12 @@ class loader(object):
         self._client = client
 
     def load(self, documentIds):
-        headers = {"Content-Type": "application/json", "Accept": "text/plain"}
         request = requests.post(
             '{0}/databases/{1}/queries'.format(
                 self._client.url, self._client.database
             ),
             data=json.dumps(documentIds),
-            headers=headers
+            headers=self._client.defaultRequestHeaders
         )
 
         if request.status_code == 200:

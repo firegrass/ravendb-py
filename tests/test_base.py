@@ -12,7 +12,7 @@ CONFIG = yaml.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)),
 class TestCase(unittest.TestCase):
 
     def get_store(self):
-        return ravendb.store(CONFIG['uri'], CONFIG['db'])
+        return ravendb.store(CONFIG['uri'], CONFIG['db'], CONFIG['api-key'])
 
     def get_uri(self):
         return CONFIG['uri']

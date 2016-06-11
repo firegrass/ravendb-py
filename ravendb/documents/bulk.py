@@ -9,8 +9,6 @@ class bulk(object):
         self._transactions = transactions
 
     def process(self):
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-
         bulk = []
 
         for transaction in self._transactions:
@@ -21,18 +19,15 @@ class bulk(object):
                 "Metadata": transaction["metadata"]
             })
 
-        request = requests.post(
-            '{0}/databases/{1}/bulk_docs'.format(
-                self._client.url, self._client.database
-            ),
-            data=json.dumps(bulk), headers=headers
-        )
+        url = '{0}/databases/{1}/bulk_docs'.format(self._client.url, self._client.database)
 
-        if request.status_code == 200:
-            response = request.json()
+        r = self._client._post(url, data=json.dumps(bulk))
+
+        if r.status_code == 200:
+            response = r.json()
         else:
             raise Exception(
                 'Error processing bulk Http :{0}'.format(
-                    request.status_code
-                )
+                    r.status_code
+                ), r.text
             )
