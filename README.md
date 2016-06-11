@@ -2,6 +2,7 @@ ravendb-py
 =======
 
 [![Build Status](https://travis-ci.org/firegrass/ravendb-py.svg?branch=master)](https://travis-ci.org/firegrass/ravendb-py)
+[![Gitter](https://badges.gitter.im/firegrass/ravendb-py.svg)](https://gitter.im/firegrass/ravendb-py?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 A python client for RavenDB
 
