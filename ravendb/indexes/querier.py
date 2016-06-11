@@ -1,5 +1,5 @@
 import requests
-
+from six import string_types
 
 class querier(object):
 
@@ -12,7 +12,7 @@ class querier(object):
         qs = {}
         genQuery = ''
 
-        if not isinstance(query, basestring):
+        if not isinstance(query, string_types):
             parsedQuery = ''
             for key, value in query.items():
                 genQuery = '{0} AND {1}:{2}'.format(parsedQuery, key, value)
@@ -32,7 +32,7 @@ class querier(object):
                 self._client.url,
                 self._client.database,
                 self._indexId
-            )
+        )
 
         request = self._client._get(queryUrl, params=qs)
 
