@@ -15,13 +15,15 @@ class cache(object):
         ids = []
 
         for document in documents:
-            id = str(self._idgenerator.Create())
+            if '@metadata' not in document and 'Raven-Entity-Name' not in document['@metadata']:
+                raise Exception('documents must have entity name')
+            id = str(self._idgenerator.Create(document['@metadata']['Raven-Entity-Name']))
             ids.append(id)
             self._cache.append({
                 "action": "PUT",
                 "id": id,
                 "doc": document,
-                "metadata": {}
+                "metadata": document['@metadata']
             })
 
         return ids

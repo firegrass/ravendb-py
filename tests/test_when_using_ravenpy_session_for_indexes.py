@@ -40,19 +40,20 @@ class test_when_using_ravenpy_session_for_indexes(test_base.TestCase):
 
     def test_it_is_possible_to_query_an_index(self):
 
-        docIds = self.session.store([{
+        docIds = self.session.store([
+            self.session.createDocument('Test', {
             "title": "test document",
             "deleted": True,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }])
+        })])
         print(docIds)
         self.session.save()
 

@@ -5,7 +5,6 @@ from .support import idgenerator as idgenerator
 from .documents import cache as c
 import requests
 
-
 class store(object):
 
     def __init__(self, url='http://localhost:8080', database='test', apiKey=None,
