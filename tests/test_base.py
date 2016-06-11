@@ -6,16 +6,20 @@ except ImportError:
     import unittest
 import yaml
 import ravendb
+import os
 
 CONFIG = yaml.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'ravendb.conf')))
 
 class TestCase(unittest.TestCase):
 
     def get_store(self):
-        return ravendb.store(CONFIG['uri'], CONFIG['db'], CONFIG['api-key'])
+        uri = os.environ['ravenhq_url']
+        db = os.environ['ravenhq_db']
+        apikey = os.environ['ravenhq_apikey']
+        return ravendb.store(uri, db, apikey)
 
     def get_uri(self):
-        return CONFIG['uri']
+        return os.environ['ravenhq_url']
 
     def get_db(self):
-        return CONFIG['db']
+        return os.environ['ravenhq_db']
