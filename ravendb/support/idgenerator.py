@@ -12,7 +12,7 @@ class hilo(object):
 
     def __init__(self, client):
         self._keySeparator = '/'
-        self._capacity = 2
+        self._capacity = 16
         self._path = 'Raven/Hilo'
         self._hilo = {}
         self._client = client
