@@ -4,11 +4,8 @@ try:
     import unittest2 as unittest
 except ImportError:
     import unittest
-import yaml
 import ravendb
 import os
-
-CONFIG = yaml.load(open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'ravendb.conf')))
 
 class TestCase(unittest.TestCase):
 
