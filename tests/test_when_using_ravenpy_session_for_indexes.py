@@ -54,7 +54,6 @@ class test_when_using_ravenpy_session_for_indexes(test_base.TestCase):
             "deleted": False,
             "type": "TestDoc"
         })])
-        print(docIds)
         self.session.save()
 
         index = {
@@ -75,20 +74,20 @@ class test_when_using_ravenpy_session_for_indexes(test_base.TestCase):
 
     def test_it_is_possible_to_query_an_index_with_multiple_arguments(self):
 
-        docIds = self.session.store([{
+        docIds = self.session.store([
+            self.session.createDocument('Test', {
             "title": "test document",
             "deleted": True,
-            "type": "DocType"
-        }, {
+            "type": "TestDoc"
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }])
-
+        })])
         self.session.save()
 
         index = {
@@ -113,20 +112,20 @@ class test_when_using_ravenpy_session_for_indexes(test_base.TestCase):
 
 
     def test_it_is_possible_to_query_an_index_and_fetch(self):
-        docIds = self.session.store([{
+        docIds = self.session.store([
+            self.session.createDocument('Test', {
             "title": "test document",
             "deleted": True,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }])
-        print(docIds)
+        })])
         self.session.save()
 
         index = {
@@ -152,20 +151,20 @@ class test_when_using_ravenpy_session_for_indexes(test_base.TestCase):
 
 
     def test_it_is_possible_to_query_an_index_with_multiple_fetches(self):
-        docIds = self.session.store([{
+        docIds = self.session.store([
+            self.session.createDocument('Test', {
             "title": "test document",
             "deleted": True,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }])
-        print(docIds)
+        })])
         self.session.save()
 
         index = {
@@ -191,19 +190,20 @@ class test_when_using_ravenpy_session_for_indexes(test_base.TestCase):
         self.assertTrue('type' in query['Results'][1].keys())
 
     def test_it_is_possible_to_query_an_index_with_multiple_arguments_and_multiple_fetches(self):
-        docIds = self.session.store([{
+        docIds = self.session.store([
+            self.session.createDocument('Test', {
             "title": "test document",
             "deleted": True,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document",
             "deleted": False,
             "type": "TestDoc"
-        }])
+        })])
         self.session.save()
         index = {
             'alias': 'doc',

@@ -13,12 +13,11 @@ class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
 
     def test_it_is_possible_to_store_and_load_documents(self):
 
-        documentIds = None
-        documentIds = self.session.store([{
+        documentIds = self.session.store([self.session.createDocument('Test', {
             "title": "test document"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document 2"
-        }])
+        })])
 
         self.session.save()
 
@@ -32,12 +31,11 @@ class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
 
     def test_it_is_possible_to_store_and_delete_documents(self):
 
-        documentIds = None
-        documentIds = self.session.store([{
+        documentIds = self.session.store([self.session.createDocument('Test', {
             "title": "test document"
-        }, {
+        }), self.session.createDocument('Test', {
             "title": "test document 2"
-        }])
+        })])
 
         self.session.save()
 
@@ -50,10 +48,9 @@ class test_when_using_ravenpy_session_for_documents(test_base.TestCase):
 
     def test_it_is_possible_to_update_documents(self):
 
-        documentIds = None
-        documentIds = self.session.store([{
+        documentIds = self.session.store([self.session.createDocument('Test', {
             "title": "test document"
-        }])
+        })])
 
         self.session.save()
 
