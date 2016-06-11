@@ -1,6 +1,4 @@
-import json
 import requests
-from ravendb.support import buncher as b
 
 
 class querier(object):
@@ -9,9 +7,9 @@ class querier(object):
         self._client = client
         self._indexId = indexId
 
-    def query(self, query = '', options = {}):
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+    def query(self, query = '', fetch = {}):
 
+        qs = {}
         genQuery = ''
 
         if not isinstance(query, basestring):
@@ -19,38 +17,30 @@ class querier(object):
             for key, value in query.items():
                 genQuery = '{0} AND {1}:{2}'.format(parsedQuery, key, value)
             genQuery = parsedQuery[5:]
-            options['query'] = genQuery
+            qs['query'] = genQuery
         else:
-            options['query'] = query
+            qs['query'] = query
 
-        options['start'] = 0
-        options['pageSize'] = 1024
+        # HACK make configurable / paging?
+        qs['start'] = 0
+        qs['pageSize'] = 1024
 
-        request = requests.get(
-            '{0}/databases/{1}/indexes/{2}'.format(
+        if len(fetch) > 0:
+            qs['fetch'] = fetch
+
+        queryUrl = '{0}/databases/{1}/indexes/{2}'.format(
                 self._client.url,
                 self._client.database,
-                self._indexId,
-            ),
-            params=options,
-            headers=headers
-        )
+                self._indexId
+            )
+
+        request = self._client._get(queryUrl, params=qs)
 
         if request.status_code == 200:
             response = request.json()
 
             if 'TotalResults' in response:
-                results = b.buncher({
-                    "IsStale": response["IsStale"],
-                    "documents": []}
-                ).bunch()
-
-                for value in response["Results"]:
-                    results.documents.append(
-                        b.buncher(value).bunch()
-                    )
-
-                return results
+                return response
 
             else:
                 raise Exception(

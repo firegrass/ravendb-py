@@ -1,6 +1,6 @@
 import time
-from documents import loader as l
-from indexes import querier as q
+from .documents import loader as l
+from .indexes import querier as q
 
 
 class queries(object):

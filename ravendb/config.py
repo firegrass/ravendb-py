@@ -4,3 +4,4 @@ class config(object):
         self.waitForNonStaleResults = True
         self.secondsToWaitForNonStaleResults = 0.5
         self.maxAttemptsToWaitForNonStaleResults = 10
+        self.apiKey = None
