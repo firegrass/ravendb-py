@@ -1,6 +1,8 @@
 ravendb-py
 =======
 
+[![Build Status](https://travis-ci.org/firegrass/ravendb-py.svg?branch=master)](https://travis-ci.org/firegrass/ravendb-py)
+
 A python client for RavenDB
 
 Usage:
