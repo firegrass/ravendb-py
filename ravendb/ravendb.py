@@ -31,18 +31,16 @@ class session(object):
         self.config = config
         self.commands = commands(self)
         self.queries = queries(self)
-        self._cache = c.cache(idgenerator.guid())
+        self._cache = c.cache(idgenerator.hilo(self))
         self.defaultRequestHeaders = { "Content-Type": "application/json", "Accept": "text/plain" }
 
     def updateAuthorizationFromApiKey(self):
-        print ('Updating bearer with ' + self.config.apiKey)
         if self.config.apiKey is None:
             return
 
         auth_check_url = '{0}/databases/{1}'.format(self.url, self.database)
         res = requests.get(auth_check_url, headers=self.defaultRequestHeaders)
         if res.status_code != 401:
-            print ('not 401')
             return
 
         if 'OAuth-Source' not in res.headers:
@@ -70,7 +68,7 @@ class session(object):
         if res.status_code != 401:
             return res
         self.updateAuthorizationFromApiKey()
-        return request.get(queryUrl, params=params, headers=headers)
+        return requests.get(queryUrl, params=params, headers=headers)
 
     def _post(self, queryUrl, data, headers = {}):
         headers = self._mergeHeaders(headers)
@@ -124,3 +122,9 @@ class session(object):
 
     def query(self, indexId, query, fetch = {}):
         return self.queries.query(indexId, query, fetch)
+
+    def createDocument(self, entityType, doc = {}):
+        if '@metadata' not in doc:
+            doc['@metadata'] = {}
+        doc['@metadata']['Raven-Entity-Name'] = entityType
+        return doc
