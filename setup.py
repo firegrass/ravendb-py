@@ -15,7 +15,7 @@ long_description = ('ravendb is a pure-Python implementation of for talking to R
 
 setup(
     name='ravendb',
-    version='0.2',
+    version='1.0',
     description='Python RavenDB client',
     long_description=long_description,
     author='Patrick McEvoy',
@@ -25,10 +25,10 @@ setup(
     packages=['ravendb', 'ravendb.documents', 'ravendb.indexes', 'ravendb.support'],
     install_requires = [
         'requests>=2.2.1',
-        'bunch>=1.0.1'
+        'six'
     ],
     test_suite='nose.collector',
-    download_url = 'https://github.com/firegrass/ravendb-py/archive/v0.2.zip',
+    download_url = 'https://github.com/firegrass/ravendb-py/archive/v1.0.zip',
     keywords = "ravendb raven database",
     zip_safe=True
 )
