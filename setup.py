@@ -28,7 +28,7 @@ setup(
         'bunch>=1.0.1'
     ],
     test_suite='nose.collector',
-    download_url = 'https://github.com/firegrass/ravendb-py/tarball/0.2',
+    download_url = 'https://github.com/firegrass/ravendb-py/archive/v0.2.zip',
     keywords = "ravendb raven database",
     zip_safe=True
 )
