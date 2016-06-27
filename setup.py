@@ -15,11 +15,11 @@ long_description = ('ravendb is a pure-Python implementation of for talking to R
 
 setup(
     name='ravendb',
-    version='0.1',
+    version='0.2',
     description='Python RavenDB client',
     long_description=long_description,
-    author='Mark Woodhall',
-    author_email='mark.woodhall@gmail.com',
+    author='Patrick McEvoy',
+    author_email='patrick.mcevoy@gmail.com',
     url='https://github.com/firegrass/ravendb-py',
     platforms='any',
     packages=['ravendb', 'ravendb.documents', 'ravendb.indexes', 'ravendb.support'],
@@ -28,7 +28,7 @@ setup(
         'bunch>=1.0.1'
     ],
     test_suite='nose.collector',
-    download_url = 'https://github.com/firegrass/ravendb-py/archive/e5d6f123f71ca59c0995225956e6dc32df50d26f.zip',
+    download_url = 'https://github.com/firegrass/ravendb-py/tarball/0.2',
     keywords = "ravendb raven database",
     zip_safe=True
 )
